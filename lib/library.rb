@@ -15,6 +15,10 @@ module Library
     DB.exec("select * from books where title = '#{title}'")
   end
 
+  def self.search_by_keyword(keyword)
+    DB.exec("select * from books where UPPER(title) like UPPER('%#{keyword}%')")
+  end
+
   def self.search_by_book_id(book_id)
     DB.exec("select * from books where id = '#{id}'")
   end
