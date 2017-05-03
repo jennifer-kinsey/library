@@ -1,10 +1,26 @@
 module Library
   def self.books
-    #returns a list of all books that the library has cataloged
+    DB.exec("select * from books")
   end
 
   def self.patrons
-    #returns a list of all patrons of the library
+    DB.exec("select * from patrons")
+  end
+
+  def self.search_by_author(author)
+    DB.exec("select * from books where author = '#{author}'")
+  end
+
+  def self.search_by_title(title)
+    DB.exec("select * from books where title = '#{title}'")
+  end
+
+  def self.search_by_book_id(book_id)
+    DB.exec("select * from books where id = '#{id}'")
+  end
+
+  def self.search_by_patron_id(patron_id)
+    DB.exec("select * from patrons where id = '#{id}'")
   end
 
   def self.check_out(book_id, patron_id)
@@ -13,18 +29,6 @@ module Library
 
   def self.check_in(book_id, patron_id)
     # checks in a single book back to the library
-  end
-
-  def self.search_by_author(author)
-    # returns all books that match the author
-  end
-
-  def self.search_by_title(title)
-    # returns all books that match the title
-  end
-
-  def self.search_by_book_id(book_id)
-    # returns a single book
   end
 
   def self.checked_out_by_patron(patron_id)
@@ -47,7 +51,7 @@ module Library
     #returns overdue books and how many days overdue sorted by longest overdue
   end
 
-  def self.history_by_patron(patron_id)
+  def self.history_of_patron(patron_id)
     # returns list of books a patron has checked out sorted by checked out date
   end
 
