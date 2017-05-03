@@ -11,7 +11,7 @@ class Book
   end
 
   def save
-    result = DB.exec("INSERT INTO books (id, title, author) VALUES ('#{id}', '#{title}', '#{author}');")
+    DB.exec("INSERT INTO books (id, title, author) VALUES ('#{id}', '#{title}', '#{author}');")
   end
 
   def delete
@@ -22,8 +22,9 @@ class Book
     #add a second, third, etc author to book
   end
 
-  def update_book
-    #mod title, authors
+  def update_attribute(type, name)
+    self.send("#{type}=", name) #updates the object
+    DB.exec("update books set #{type} = '#{name}' where id = '#{id}';")
   end
 
 end

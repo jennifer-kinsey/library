@@ -25,4 +25,21 @@ describe "Book" do
       expect(results.length).to eq 0
     end
   end
+
+  describe "#update_attribute" do
+    it ("updates the author with new author") do
+      new_book.save
+      new_book.update_attribute("author", "William Shakespeare")
+      results = DB.exec("select * from books where id = '#{new_book.id}'").to_a
+      expect(results.first.fetch("author")).to eq "William Shakespeare"
+      expect(new_book.author).to eq "William Shakespeare"
+    end
+    it ("updates the title with new title") do
+      new_book.save
+      new_book.update_attribute("title", "Hamlet")
+      results = DB.exec("select * from books where id = '#{new_book.id}'").to_a
+      expect(results.first.fetch("title")).to eq "Hamlet"
+      expect(new_book.title).to eq "Hamlet"
+    end
+  end
 end
