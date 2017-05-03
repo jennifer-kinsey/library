@@ -66,6 +66,10 @@ describe "Library" do
     it 'displays all the matching titles by keyword' do
       expect(Library.search_by_keyword("the").to_a.length).to eq 3
     end
+
+    it 'displays all the matching titles by keyword regardless of case' do
+      expect(Library.search_by_keyword("tHE").to_a.length).to eq 3
+    end
   end
 
   describe('.search_by_book_id') do

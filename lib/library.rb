@@ -1,3 +1,5 @@
+require "securerandom"
+
 module Library
   def self.books
     DB.exec("select * from books")
@@ -28,7 +30,10 @@ module Library
   end
 
   def self.check_out(book_id, patron_id)
-    # checks out a single book to a patron, assigns due date
+    uuid = SecureRandom.uuid
+    date = Time.now.strftime("%Y-%m-%d")
+    DB.exec("insert into records (id, patron_id, book_id, date_out)
+            values ('#{uuid}', '#{patron_id}', '#{book_id}', '#{date}');")
   end
 
   def self.check_in(book_id, patron_id)
