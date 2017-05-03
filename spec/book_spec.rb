@@ -2,6 +2,7 @@ require "helper_spec"
 
 describe "Book" do
   let(:new_book) {Book.new({:title => "Great Expectations", :author => "Charles Dickens"})}
+  let(:results) {DB.exec("select * from books where id = '#{new_book.id}'").to_a}
 
   describe '#initialize' do
     it 'creates an initial book object' do
@@ -12,7 +13,6 @@ describe "Book" do
   describe "#save" do
     it "saves a single record to the database" do
       new_book.save
-      results = DB.exec("select * from books where id = '#{new_book.id}'").to_a
       expect(results.length).to eq 1
     end
   end
@@ -21,7 +21,6 @@ describe "Book" do
     it "deletes a single record to the database" do
       new_book.save
       new_book.delete
-      results = DB.exec("select * from books where id = '#{new_book.id}'").to_a
       expect(results.length).to eq 0
     end
   end
@@ -30,14 +29,12 @@ describe "Book" do
     it ("updates the author with new author") do
       new_book.save
       new_book.update_attribute("author", "William Shakespeare")
-      results = DB.exec("select * from books where id = '#{new_book.id}'").to_a
       expect(results.first.fetch("author")).to eq "William Shakespeare"
       expect(new_book.author).to eq "William Shakespeare"
     end
     it ("updates the title with new title") do
       new_book.save
       new_book.update_attribute("title", "Hamlet")
-      results = DB.exec("select * from books where id = '#{new_book.id}'").to_a
       expect(results.first.fetch("title")).to eq "Hamlet"
       expect(new_book.title).to eq "Hamlet"
     end
