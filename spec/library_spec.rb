@@ -83,4 +83,28 @@ describe "Library" do
       expect(Library.search_by_patron_id(new_patron1.id).first["id"]).to eq new_patron1.id
     end
   end
+
+  describe('.check_out') do
+    it 'checks out a book by inserting a new line into the library records' do
+      Library.check_out(new_patron1.id, new_book1.id)
+      expect(DB.exec("select * from records").to_a.length).to eq 1
+    end
+
+    it 'checks out two books by inserting two new lines into the library records' do
+      Library.check_out(new_patron1.id, new_book1.id)
+      Library.check_out(new_patron2.id, new_book2.id)
+      expect(DB.exec("select * from records").to_a.length).to eq 2
+    end
+  end
+
+  describe('.check_in') do
+    it 'checks in a book by updating the library record with the appropriate date' do
+      date = Time.now.strftime("%Y-%m-%d")
+      Library.check_out(new_patron1.id, new_book1.id)
+      Library.check_in(new_patron1.id, new_book1.id)
+      result = DB.exec("select * from records").to_a
+      expect(result.first["date_in"]).to eq date
+    end
+  end
+
 end

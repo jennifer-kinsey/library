@@ -37,7 +37,9 @@ module Library
   end
 
   def self.check_in(book_id, patron_id)
-    # checks in a single book back to the library
+    date = Time.now.strftime("%Y-%m-%d")
+    DB.exec("UPDATE records SET date_in = '#{date}' WHERE book_id = '#{book_id}';")
+
   end
 
   def self.checked_out_by_patron(patron_id)
