@@ -20,11 +20,11 @@ module Library
   end
 
   def self.search_by_book_id(book_id)
-    DB.exec("select * from books where id = '#{id}'")
+    DB.exec("select * from books where id = '#{book_id}'")
   end
 
   def self.search_by_patron_id(patron_id)
-    DB.exec("select * from patrons where id = '#{id}'")
+    DB.exec("select * from patrons where id = '#{patron_id}'")
   end
 
   def self.check_out(book_id, patron_id)
