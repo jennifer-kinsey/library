@@ -8,11 +8,11 @@ module Library
   end
 
   def self.search_by_author(author)
-    DB.exec("select * from books where author = '#{author}'")
+    DB.exec("select * from books where UPPER(author) = UPPER('#{author}')")
   end
 
   def self.search_by_title(title)
-    DB.exec("select * from books where title = '#{title}'")
+    DB.exec("select * from books where UPPER(title) = UPPER('#{title}')")
   end
 
   def self.search_by_keyword(keyword)

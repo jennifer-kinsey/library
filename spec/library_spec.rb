@@ -43,7 +43,14 @@ describe "Library" do
       new_book1.save
       new_book2.save
       new_book6.save
-      expect(Library.search_by_author("Anne Rice").to_a.length).to eq 2
+      expect(Library.search_by_author("anne rice").to_a.length).to eq 2
+    end
+
+    it 'displays all the books by author regardless of case' do
+      new_book1.save
+      new_book2.save
+      new_book6.save
+      expect(Library.search_by_author("aNNe rIce").to_a.length).to eq 2
     end
   end
 
@@ -56,7 +63,18 @@ describe "Library" do
       new_book5.save
       new_book6.save
       new_book7.save
-      expect(Library.search_by_title("Great Expectations").to_a.length).to eq 2
+      expect(Library.search_by_title("great expectations").to_a.length).to eq 2
+    end
+
+    it 'displays all the books that match a title regardless of case' do
+      new_book1.save
+      new_book2.save
+      new_book3.save
+      new_book4.save
+      new_book5.save
+      new_book6.save
+      new_book7.save
+      expect(Library.search_by_title("GREAT expectations").to_a.length).to eq 2
     end
   end
 
