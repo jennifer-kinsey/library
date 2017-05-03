@@ -44,30 +44,38 @@ module Library
 
   def self.checked_out_by_patron(patron_id)
     # returns all books and due dates sorted by date for a single patron
+    # only books that have not been checked back in
   end
 
   def self.checked_out?(book_id)
-    #returns a boolean t f if a book is checked out or not
+    DB.exec("select * from records where book_id = '#{book_id}'
+             and date_in is null").to_a.length > 0
   end
 
   def self.available_books
     # reurns a list of books currently available to be checked out
+    # book cannot be checked out
+    # book can be checked out if checked back in
   end
 
   def self.checked_out_books
-    #rerturns all checked out books and due dates
+    # rerturns all checked out books and due dates
+    # book has to be checked out but not checked in
   end
 
   def self.overdue_books
-    #returns overdue books and how many days overdue sorted by longest overdue
+    # returns overdue books and how many days overdue sorted by longest overdue
+    # book has to have been checked out over 21 days ago
   end
 
   def self.history_of_patron(patron_id)
     # returns list of books a patron has checked out sorted by checked out date
+    # shows all books regardless of if they were checked back in
   end
 
   def self.due_date(book_id)
     # returns the date a book is due
+    # should return date 21 days after book was checked in
   end
 
 end

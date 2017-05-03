@@ -86,13 +86,18 @@ describe "Library" do
 
   describe('.check_out') do
     it 'checks out a book by inserting a new line into the library records' do
-      Library.check_out(new_patron1.id, new_book1.id)
+      Library.check_out(new_book1.id, new_patron1.id)
       expect(DB.exec("select * from records").to_a.length).to eq 1
     end
 
+    it 'checks to make sure the id of the book is in the right column' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      expect(DB.exec("select * from records").to_a[0]["book_id"]).to eq new_book1.id
+    end
+
     it 'checks out two books by inserting two new lines into the library records' do
-      Library.check_out(new_patron1.id, new_book1.id)
-      Library.check_out(new_patron2.id, new_book2.id)
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_out(new_book2.id, new_patron2.id)
       expect(DB.exec("select * from records").to_a.length).to eq 2
     end
   end
@@ -100,10 +105,17 @@ describe "Library" do
   describe('.check_in') do
     it 'checks in a book by updating the library record with the appropriate date' do
       date = Time.now.strftime("%Y-%m-%d")
-      Library.check_out(new_patron1.id, new_book1.id)
-      Library.check_in(new_patron1.id, new_book1.id)
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_in(new_book1.id, new_patron1.id)
       result = DB.exec("select * from records").to_a
       expect(result.first["date_in"]).to eq date
+    end
+  end
+
+  describe('.checked_out?') do
+    it 'returns true if a book is checked out' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      expect(Library.checked_out?(new_book1.id)).to be true
     end
   end
 
