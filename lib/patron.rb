@@ -1,9 +1,11 @@
+require "securerandom"
+
 class Patron
 
-  attr_accessor{:id, :name}
+  attr_accessor(:id, :name)
 
   def initialize (attributes)
-    @id = attributes.fetch(:id)
+    @id = SecureRandom.uuid
     @name = attributes.fetch(:name)
   end
 

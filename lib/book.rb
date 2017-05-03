@@ -1,19 +1,21 @@
+require "securerandom"
+
 class Book
 
-  attr_accessor{:id, :title, :author}
+  attr_accessor(:id, :title, :author)
 
   def initialize (attributes)
-    @id = attributes.fetch(:id)
-    @title = attributes.fetch(:title)
-    @author = attributes.fetch(:author)
+    self.id = SecureRandom.uuid
+    self.title = attributes.fetch(:title)
+    self.author = attributes.fetch(:author)
   end
 
   def save
-    #pushes the book to the database
+    result = DB.exec("INSERT INTO books (id, title, author) VALUES ('#{id}', '#{title}', '#{author}');")
   end
 
   def delete
-    #delete book from database
+    DB.exec("delete from books where id = '#{id}'")
   end
 
   def add_author
@@ -23,5 +25,5 @@ class Book
   def update_book
     #mod title, authors
   end
-  
+
 end
