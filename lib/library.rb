@@ -38,14 +38,14 @@ module Library
 
   def self.check_in(book_id, patron_id)
     date = Time.now.strftime("%Y-%m-%d")
-    DB.exec("UPDATE records SET date_in = '#{date}' WHERE book_id = '#{book_id}';")
+    DB.exec("UPDATE records SET date_in = '#{date}' WHERE book_id = '#{book_id}'             AND date_in IS NULL;")
 
   end
 
   def self.checked_out_by_patron(patron_id)
     # returns all books and due dates sorted by date for a single patron
     # only books that have not been checked back in
-    DB.exec("SELECT * FROM records where patron_id ='#{patron_id}' AND date_in IS NULL")
+    DB.exec("SELECT * FROM records where patron_id ='#{patron_id}' AND date_in IS NULL;")
   end
 
   def self.checked_out?(book_id)
@@ -69,8 +69,7 @@ module Library
   end
 
   def self.history_of_patron(patron_id)
-    # returns list of books a patron has checked out sorted by checked out date
-    # shows all books regardless of if they were checked back in
+    DB.exec("SELECT * FROM records where patron_id ='#{patron_id}' ORDER BY date_out;")
   end
 
   def self.due_date(book_id)

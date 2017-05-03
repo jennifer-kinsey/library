@@ -110,6 +110,17 @@ describe "Library" do
       result = DB.exec("select * from records").to_a
       expect(result.first["date_in"]).to eq date
     end
+
+    it 'patron can check out and check in the same book multiple times and records will update the correct record' do
+      date = Time.now.strftime("%Y-%m-%d")
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_in(new_book1.id, new_patron1.id)
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_in(new_book1.id, new_patron1.id)
+      result = DB.exec("select * from records").to_a
+      expect(result.to_a[0]["date_in"]).to eq date
+      expect(result.to_a[1]["date_in"]).to eq date
+    end
   end
 
   describe('.checked_out?') do
@@ -161,4 +172,23 @@ describe "Library" do
     end
   end
 
+  describe('.history_of_patron') do
+    it'returns the checkout history of the patron, regardless if it is currently checked out or not.' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_in(new_book1.id, new_patron1.id)
+      Library.check_out(new_book2.id, new_patron1.id)
+      Library.check_out(new_book3.id, new_patron1.id)
+      expect(Library.history_of_patron(new_patron1.id).to_a.length).to eq 3
+    end
+
+    it'returns the checkout history of the patron, regardless if it is currently checked in/out multiple times.' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_in(new_book1.id, new_patron1.id)
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_in(new_book1.id, new_patron1.id)
+      Library.check_out(new_book2.id, new_patron1.id)
+      Library.check_out(new_book3.id, new_patron1.id)
+      expect(Library.history_of_patron(new_patron1.id).to_a.length).to eq 4
+    end
+  end
 end
