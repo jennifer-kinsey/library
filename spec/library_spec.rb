@@ -119,4 +119,46 @@ describe "Library" do
     end
   end
 
+  describe('.checked_out_books') do
+    it 'returns list of all books checked out' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_out(new_book2.id, new_patron1.id)
+      Library.check_out(new_book3.id, new_patron1.id)
+      expect(Library.checked_out_books.to_a.length).to eq 3
+    end
+
+    # it 'returns list of all books checked out in descending order by checkout date' do
+    #   #want to make sure these guys are actually in some sort of descending ORDER
+    #   #verify that it is actually oldest checked out books to newestly checked out
+    #   Library.check_out(new_book1.id, new_patron1.id)
+    #   Library.check_out(new_book2.id, new_patron1.id)
+    #   Library.check_out(new_book3.id, new_patron1.id)
+    #   expect(Library.checked_out_books.to_a.length).to eq 3
+    # end
+  end
+
+  describe('.checked_out_by_patron') do
+    it 'returns list of all books currently checked out by patron' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_out(new_book2.id, new_patron1.id)
+      Library.check_out(new_book3.id, new_patron1.id)
+      expect(Library.checked_out_by_patron(new_patron1.id).to_a.length).to eq 3
+    end
+
+    it 'returns list of all books currently checked out by patron, even when some books are checked back in' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_in(new_book1.id, new_patron1.id)
+      Library.check_out(new_book2.id, new_patron1.id)
+      Library.check_out(new_book3.id, new_patron1.id)
+      expect(Library.checked_out_by_patron(new_patron1.id).to_a.length).to eq 2
+    end
+
+    it 'returns list of all books currently checked out by patron, even when other patrons are in the mix' do
+      Library.check_out(new_book1.id, new_patron1.id)
+      Library.check_out(new_book2.id, new_patron1.id)
+      Library.check_out(new_book3.id, new_patron2.id)
+      expect(Library.checked_out_by_patron(new_patron1.id).to_a.length).to eq 2
+    end
+  end
+
 end

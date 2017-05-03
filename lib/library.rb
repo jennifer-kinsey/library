@@ -45,6 +45,7 @@ module Library
   def self.checked_out_by_patron(patron_id)
     # returns all books and due dates sorted by date for a single patron
     # only books that have not been checked back in
+    DB.exec("SELECT * FROM records where patron_id ='#{patron_id}' AND date_in IS NULL")
   end
 
   def self.checked_out?(book_id)
@@ -59,8 +60,7 @@ module Library
   end
 
   def self.checked_out_books
-    # rerturns all checked out books and due dates
-    # book has to be checked out but not checked in
+    DB.exec("SELECT * FROM records WHERE date_in is null ORDER BY date_out DESC;").to_a
   end
 
   def self.overdue_books
