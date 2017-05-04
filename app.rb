@@ -101,7 +101,7 @@ get '/patron/:id' do
   patron_id = params.fetch('id')
   @patron = Library.search_by_patron_id(patron_id).first
   @checked_out_books = Library.checked_out_by_patron(patron_id).to_a
-  @books = Library.available_books
+  @books = Library.books
   erb(:patron_profile)
 end
 
@@ -112,7 +112,7 @@ get '/checkout/:id' do
   Library.check_out(book_id, patron_id)
   @patron = Library.search_by_patron_id(patron_id).first
   @checked_out_books = Library.checked_out_by_patron(patron_id).to_a
-  @books = Library.available_books
+  @books = Library.books
   erb(:patron_profile)
 end
 
@@ -123,6 +123,6 @@ get '/checkin/:id' do
   Library.check_in(book_id, patron_id)
   @patron = Library.search_by_patron_id(patron_id).first
   @checked_out_books = Library.checked_out_by_patron(patron_id).to_a
-  @books = Library.available_books
+  @books = Library.books
   erb(:patron_profile)
 end
