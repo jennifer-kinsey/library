@@ -39,4 +39,11 @@ describe "Book" do
       expect(new_book.title).to eq "Hamlet"
     end
   end
+
+  describe "#due_date" do
+    it "returns a date 21 days out from checked out date" do
+      new_book.date_out = "2017-09-09"
+      expect(new_book.due_date).to eq Time.new(2017,9,30)
+    end
+  end
 end

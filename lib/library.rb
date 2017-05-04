@@ -72,9 +72,4 @@ module Library
     DB.exec("SELECT * FROM records where patron_id ='#{patron_id}' ORDER BY date_out;")
   end
 
-  def self.due_date(book_id)
-    # returns the date a book is due
-    # should return date 21 days after book was checked in
-  end
-
 end
