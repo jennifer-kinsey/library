@@ -2,11 +2,12 @@ require "securerandom"
 
 class Patron
 
-  attr_accessor(:id, :name)
+  attr_accessor(:id, :name, :books)
 
   def initialize (attributes)
     self.id = attributes.fetch(:id, SecureRandom.uuid)
-    self.name = attributes.fetch(:name, nil)
+    self.name = attributes.fetch(:name)
+    self.books = []
   end
 
   def save
@@ -14,8 +15,16 @@ class Patron
   end
 
   def update_attribute(type, name)
-    self.send("#{type}=", name) #updates the object
-    DB.exec("UPDATE patrons SET #{type} = '#{name}' WHERE id = '#{id}';")
+    if name.match(/\As*\z/)
+      return
+    else
+      self.send("#{type}=", name) #updates the object
+      DB.exec("UPDATE patrons SET #{type} = '#{name}' WHERE id = '#{id}';")
+    end
+  end
+
+  def add_book(book)
+    books.push(book)
   end
 
   def delete

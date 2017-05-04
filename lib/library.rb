@@ -72,4 +72,9 @@ module Library
     DB.exec("SELECT * FROM records where patron_id ='#{patron_id}' ORDER BY date_out;")
   end
 
+  def self.objectify(dataset)
+    new_data = []
+
+    new_data
+  end
 end

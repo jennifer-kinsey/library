@@ -168,6 +168,7 @@ describe "Library" do
       Library.check_out(new_book1.id, new_patron1.id)
       Library.check_out(new_book2.id, new_patron1.id)
       Library.check_out(new_book3.id, new_patron2.id)
+binding.pry
       expect(Library.checked_out_by_patron(new_patron1.id).to_a.length).to eq 2
     end
   end

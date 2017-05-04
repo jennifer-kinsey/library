@@ -29,8 +29,12 @@ class Book
   end
 
   def update_attribute(type, name)
-    self.send("#{type}=", name) #updates the object
-    DB.exec("update books set #{type} = '#{name}' where id = '#{id}';")
+    if name.match(/\As*\z/)
+      return
+    else
+      self.send("#{type}=", name) #updates the object
+      DB.exec("update books set #{type} = '#{name}' where id = '#{id}';")
+    end
   end
 
   def due_date
