@@ -2,11 +2,11 @@ require "securerandom"
 
 module Library
   def self.books
-    Book.objectify(DB.exec("select * from books"))
+    Book.objectify(DB.exec("select * from books order by title"))
   end
 
   def self.patrons
-    Patron.objectify(DB.exec("select * from patrons"))
+    Patron.objectify(DB.exec("select * from patrons order by name"))
   end
 
   def self.search_by_author(author)
@@ -32,14 +32,17 @@ module Library
   def self.check_out(book_id, patron_id)
     uuid = SecureRandom.uuid
     date = Time.now.strftime("%Y-%m-%d")
-    DB.exec("insert into records (id, patron_id, book_id, date_out)
-            values ('#{uuid}', '#{patron_id}', '#{book_id}', '#{date}');")
+    if checked_out?(book_id)
+      return
+    else
+      DB.exec("insert into records (id, patron_id, book_id, date_out)
+              values ('#{uuid}', '#{patron_id}', '#{book_id}', '#{date}');")
+    end
   end
 
   def self.check_in(book_id, patron_id)
     date = Time.now.strftime("%Y-%m-%d")
     DB.exec("UPDATE records SET date_in = '#{date}' WHERE book_id = '#{book_id}'             AND date_in IS NULL;")
-
   end
 
   def self.checked_out_by_patron(patron_id)
@@ -54,9 +57,13 @@ module Library
   end
 
   def self.available_books
-    # reurns a list of books currently available to be checked out
-    # book cannot be checked out
-    # book can be checked out if checked back in
+    available_books = []
+    Library.books.each do |book|
+      unless checked_out?(book.id)
+        available_books.push(book)
+      end
+    end
+    available_books
   end
 
   def self.checked_out_books

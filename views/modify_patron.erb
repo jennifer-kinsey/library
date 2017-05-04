@@ -1,5 +1,5 @@
 <%= "<h2>#{@patron.name}</h2>" %>
-<form class="form-group" action="/patron" method="post">
+<form class="form-group" action="/admin_patron" method="post">
   <input name="_method" type="hidden" value="patch">
 
   <label for="name">Update Patron Name:</label>
@@ -7,3 +7,15 @@
   <br>
   <%= "<button type='submit' class='btn btn-primary' name='patron_id' value='#{@patron.id}'>Modify Patron</button>
 </form>" %>
+
+<form class="form-group" action="/admin_patron" method="post">
+  <input name="_method" type="hidden" value="delete">
+  <%= "<button type='submit' name='patron_id' value='#{@patron.id}' class='btn btn-danger'>Delete</button> "%>
+</form>
+
+<h3>Checked Out Books</h3>
+<%= "<h4>No books checked out</h4>" if @checked_out_books.empty? %>
+<% @checked_out_books.each do |record| %>
+  <% book = Library.search_by_book_id(record.fetch("book_id")).first %>
+  <%= "<h4>#{book.title}, checked out: #{record.fetch("date_out")}</h4>" %>
+<% end %>

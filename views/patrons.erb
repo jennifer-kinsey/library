@@ -1,0 +1,5 @@
+<h1>Select your name</h1>
+
+<% @patrons.each do |patron| %>
+  <%= "<h4><a href='/patron/#{patron.id}'>#{patron.name}</a></h4>" %>
+<% end %>

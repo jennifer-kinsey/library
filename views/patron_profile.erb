@@ -1,0 +1,21 @@
+<%= "<h1>Hello, #{@patron.name}</h1>"%>
+
+<h2>Books Checked Out</h2>
+
+<h3>Checked Out Books</h3>
+<%= "<h4>No books checked out</h4>" if @checked_out_books.empty? %>
+<% @checked_out_books.each do |record| %>
+  <% book = Library.search_by_book_id(record.fetch("book_id")).first %>
+  <%= "<h4><a href ='/checkin/#{book.id}!#{@patron.id}'>#{book.title}</a>, checked out: #{record.fetch("date_out")}</h4>" %>
+<% end %>
+
+<h2>Books Available for Checkout</h2>
+
+<%= "<h4>There are no books available!</h4>" if @books.empty? %>
+<% @books.each do |book| %>
+  <%= "<h4>
+  <a type='submit' href='/checkout/#{book.id}!#{@patron.id}'>#{book.title}
+  </a></h4>" %>
+<% end %>
+
+<a href="/" class="btn btn-info">home</a>

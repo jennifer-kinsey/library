@@ -21,7 +21,7 @@
     <div class="col-md-6">
       <h2>Patrons</h2>
       <hr>
-      <form class="form-group" action="/patron" method="post">
+      <form class="form-group" action="/admin_patron" method="post">
         <label for="name">Patron Name:</label>
         <input class="form-control" type="text" name="name">
         <br>
@@ -29,7 +29,7 @@
       </form>
       <h2>List of Patrons</h2>
       <% @patrons.each do |patron| %>
-        <%= "<h4><a href='/patron/#{patron.id}'>#{patron.name}</a></h4>" %>
+        <%= "<h4><a href='/admin_patron/#{patron.id}'>#{patron.name}</a></h4>" %>
       <% end %>
     </div>
   </div>
