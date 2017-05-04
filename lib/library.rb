@@ -2,31 +2,31 @@ require "securerandom"
 
 module Library
   def self.books
-    DB.exec("select * from books")
+    Book.objectify(DB.exec("select * from books"))
   end
 
   def self.patrons
-    DB.exec("select * from patrons")
+    Patron.objectify(DB.exec("select * from patrons"))
   end
 
   def self.search_by_author(author)
-    DB.exec("select * from books where UPPER(author) = UPPER('#{author}')")
+    Book.objectify(DB.exec("select * from books where UPPER(author) = UPPER('#{author}')"))
   end
 
   def self.search_by_title(title)
-    DB.exec("select * from books where UPPER(title) = UPPER('#{title}')")
+    Book.objectify(DB.exec("select * from books where UPPER(title) = UPPER('#{title}')"))
   end
 
   def self.search_by_keyword(keyword)
-    DB.exec("select * from books where UPPER(title) like UPPER('%#{keyword}%')")
+    Book.objectify(DB.exec("select * from books where UPPER(title) like UPPER('%#{keyword}%')"))
   end
 
   def self.search_by_book_id(book_id)
-    DB.exec("select * from books where id = '#{book_id}'")
+    Book.objectify(DB.exec("select * from books where id = '#{book_id}'"))
   end
 
   def self.search_by_patron_id(patron_id)
-    DB.exec("select * from patrons where id = '#{patron_id}'")
+    Patron.objectify(DB.exec("select * from patrons where id = '#{patron_id}'"))
   end
 
   def self.check_out(book_id, patron_id)

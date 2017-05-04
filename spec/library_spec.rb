@@ -32,7 +32,7 @@ describe "Library" do
 
   describe('.books') do
     it 'displays all the books' do
-      expect(Library.books.to_a.length).to eq 7
+      expect(Library.books.length).to eq 7
     end
   end
 
@@ -44,17 +44,17 @@ describe "Library" do
 
   describe('.search_by_author') do
     it 'displays all the books by author' do
-      expect(Library.search_by_author("anne rice").to_a.length).to eq 2
+      expect(Library.search_by_author("anne rice").length).to eq 2
     end
 
     it 'displays all the books by author regardless of case' do
-      expect(Library.search_by_author("aNNe rIce").to_a.length).to eq 2
+      expect(Library.search_by_author("aNNe rIce").length).to eq 2
     end
   end
 
   describe('.search_by_title') do
     it 'displays all the books that match a title' do
-      expect(Library.search_by_title("great expectations").to_a.length).to eq 2
+      expect(Library.search_by_title("great expectations").length).to eq 2
     end
 
     it 'displays all the books that match a title regardless of case' do
@@ -74,13 +74,13 @@ describe "Library" do
 
   describe('.search_by_book_id') do
     it 'displays the book that matches the id' do
-      expect(Library.search_by_book_id(new_book1.id).first["id"]).to eq new_book1.id
+      expect(Library.search_by_book_id(new_book1.id).first.id).to eq new_book1.id
     end
   end
 
   describe('.search_by_patron_id') do
     it 'displays the patron that matches the id' do
-      expect(Library.search_by_patron_id(new_patron1.id).first["id"]).to eq new_patron1.id
+      expect(Library.search_by_patron_id(new_patron1.id).first.id).to eq new_patron1.id
     end
   end
 
